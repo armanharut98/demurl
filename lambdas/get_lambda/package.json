@@ -1,0 +1,17 @@
+{
+  "name": "gt_lambda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:layer": "mkdir -p archives && zip -r get-layer.zip node_modules package.json package-lock.json && mv get-layer.zip ./archives",
+    "build:lambda": "mkdir -p archives && zip get.zip ./src/get_lambda.js && mv get.zip ./archives"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.726.1"
+  },
+  "type": "module"
+}
