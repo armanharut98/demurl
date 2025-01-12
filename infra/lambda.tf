@@ -23,7 +23,7 @@ resource "aws_lambda_layer_version" "post_layer" {
   s3_bucket           = "demurl"
   s3_key              = "lambdas/post-layer.zip"
   source_code_hash    = data.aws_s3_object.post_layer.etag
-  compatible_runtimes = ["nodejs16.x"]
+  compatible_runtimes = ["nodejs18.x"]
 }
 
 resource "aws_lambda_layer_version" "get_layer" {
@@ -31,7 +31,7 @@ resource "aws_lambda_layer_version" "get_layer" {
   s3_bucket           = "demurl"
   s3_key              = "lambdas/get-layer.zip"
   source_code_hash    = data.aws_s3_object.get_layer.etag
-  compatible_runtimes = ["nodejs16.x"]
+  compatible_runtimes = ["nodejs18.x"]
 }
 
 resource "aws_iam_policy" "lambda_policy" {
@@ -87,9 +87,15 @@ resource "aws_lambda_function" "post_lambda" {
   s3_key           = data.aws_s3_object.post_lambda.key
   layers           = [aws_lambda_layer_version.post_layer.arn]
   role             = aws_iam_role.lambda_role.arn
-  runtime          = "nodejs16.x"
-  handler          = "post_lambda.handler"
+  runtime          = "nodejs18.x"
+  handler          = "index.handler"
   source_code_hash = data.aws_s3_object.post_lambda.etag
+  environment {
+    variables = {
+      TABLE_NAME = "demurl"
+      REGION     = "us-east-1"
+    }
+  }
 }
 
 resource "aws_lambda_function" "get_lambda" {
@@ -98,7 +104,13 @@ resource "aws_lambda_function" "get_lambda" {
   s3_key           = data.aws_s3_object.get_lambda.key
   layers           = [aws_lambda_layer_version.get_layer.arn]
   role             = aws_iam_role.lambda_role.arn
-  runtime          = "nodejs16.x"
-  handler          = "get_lambda.handler"
+  runtime          = "nodejs18.x"
+  handler          = "index.handler"
   source_code_hash = data.aws_s3_object.get_lambda.etag
+  environment {
+    variables = {
+      TABLE_NAME = "demurl"
+      REGION     = "us-east-1"
+    }
+  }
 }

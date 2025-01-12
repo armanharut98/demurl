@@ -1,11 +1,11 @@
 {
   "name": "post_lambda",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:layer": "mkdir -p archives && zip -r post-layer.zip node_modules package.json package-lock.json && mv post-layer.zip ./archives",
-    "build:lambda": "mkdir -p archives && zip post.zip ./src/post_lambda.js && mv post.zip ./archives"
+    "build:layer": "mkdir -p archives/nodejs && cp -r node_modules package-lock.json package.json archives/nodejs && cd archives && zip -r post-layer.zip ./nodejs && rm -rf ./nodejs",
+    "build:lambda": "mkdir -p archives && cd src && zip post.zip ./index.mjs && mv post.zip ../archives"
   },
   "author": "",
   "license": "ISC",

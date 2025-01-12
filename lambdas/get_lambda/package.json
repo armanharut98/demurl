@@ -1,11 +1,11 @@
 {
   "name": "gt_lambda",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:layer": "mkdir -p archives && zip -r get-layer.zip node_modules package.json package-lock.json && mv get-layer.zip ./archives",
-    "build:lambda": "mkdir -p archives && zip get.zip ./src/get_lambda.js && mv get.zip ./archives"
+    "build:layer": "mkdir -p archives/nodejs && cp -r node_modules package-lock.json package.json archives/nodejs && cd archives && zip -r get-layer.zip ./nodejs && rm -rf ./nodejs",
+    "build:lambda": "mkdir -p archives && cd src && zip get.zip ./index.mjs && mv get.zip ../archives"
   },
   "author": "",
   "license": "ISC",
