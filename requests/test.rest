@@ -1,0 +1,9 @@
+GET https://fvdgqvbqe6.execute-api.us-east-1.amazonaws.com/test/3d25a14d
+
+###
+POST https://fvdgqvbqe6.execute-api.us-east-1.amazonaws.com/test
+Content-Type: application/json
+
+{
+    "url": "www.zeitraum.am"
+}

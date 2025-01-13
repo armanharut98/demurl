@@ -13,13 +13,15 @@ export const handler = async (event) => {
         TableName: tableName,
         Key: {
             id: {
-                S: event.id
+                S: event.pathParameters.id
             }
         }
     }
+    console.log("ID: ", event.pathParameters.id)
     const command = new GetItemCommand(params)
     try {
         const response = await client.send(command)
+        console.log(response)
         return {
             statusCode: 301,
             headers: {

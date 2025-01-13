@@ -10,12 +10,14 @@ const tableName = process.env.TABLE_NAME
 
 export const handler = async (event) => {
     console.log(JSON.stringify(event))
-    const hash = crc32(event.body.url).toString(16)
+    const body = JSON.parse(event.body)
+    const hash = crc32(body.url).toString(16)
+    console.log(hash)
     const params = {
         TableName: tableName,
         Item: {
             "id": { "S": hash.toString() },
-            "url": { "S": event.body.url }
+            "url": { "S": body.url }
         }
     }
     const command = new PutItemCommand(params)
@@ -26,9 +28,7 @@ export const handler = async (event) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: {
-                hash
-            }
+            body: JSON.stringify({ hash })
         }
     } catch (exception) {
         console.log("Error: ", exception)
