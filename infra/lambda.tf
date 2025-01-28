@@ -90,6 +90,7 @@ resource "aws_lambda_function" "post_lambda" {
   runtime          = "nodejs18.x"
   handler          = "index.handler"
   source_code_hash = data.aws_s3_object.post_lambda.etag
+
   environment {
     variables = {
       TABLE_NAME = "demurl"
@@ -107,6 +108,7 @@ resource "aws_lambda_function" "get_lambda" {
   runtime          = "nodejs18.x"
   handler          = "index.handler"
   source_code_hash = data.aws_s3_object.get_lambda.etag
+
   environment {
     variables = {
       TABLE_NAME = "demurl"

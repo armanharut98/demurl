@@ -1,9 +1,9 @@
-GET https://fvdgqvbqe6.execute-api.us-east-1.amazonaws.com/test/3d25a14d
+GET https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev/9e3adef2
 
 ###
-POST https://fvdgqvbqe6.execute-api.us-east-1.amazonaws.com/test
+POST https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev/shorten
 Content-Type: application/json
 
 {
-    "url": "www.zeitraum.am"
+    "url": "https://www.youtube.com"
 }
