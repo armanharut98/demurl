@@ -7,3 +7,6 @@ Content-Type: application/json
 {
     "url": "https://www.youtube.com"
 }
+
+###
+OPTIONS https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev/shorten

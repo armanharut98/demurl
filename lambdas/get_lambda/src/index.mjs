@@ -25,7 +25,10 @@ export const handler = async (event) => {
         return {
             statusCode: 301,
             headers: {
-                Location: response.Item.url.S
+                "Location": response.Item.url.S,
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Methods": "GET,OPTIONS,POST,PUT",
+                "Access-Control-Allow-Origin": "*"
             }
         }
     } catch (exception) {

@@ -27,6 +27,8 @@ export const handler = async (event) => {
             statusCode: 201,
             headers: {
                 "Content-Type": "application/json",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Methods": "GET,OPTIONS,POST,PUT",
                 "Access-Control-Allow-Origin": "*"
             },
             body: JSON.stringify({ hash })

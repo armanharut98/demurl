@@ -69,17 +69,71 @@ resource "aws_lambda_permission" "apigw_post_lambda" {
   source_arn    = "${aws_api_gateway_rest_api.demurl_api.execution_arn}/*/*/*"
 }
 
-resource "aws_api_gateway_deployment" "dev_deployment" {
-  depends_on = [
-    aws_api_gateway_integration.post_lambda_integration,
-    aws_api_gateway_integration.get_lambda_integration
-  ]
-
-  rest_api_id = aws_api_gateway_rest_api.demurl_api.id
+// OPTIONS
+resource "aws_api_gateway_method" "options" {
+  rest_api_id   = aws_api_gateway_rest_api.demurl_api.id
+  resource_id   = aws_api_gateway_resource.shorten.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
 }
 
-resource "aws_api_gateway_stage" "example" {
+resource "aws_api_gateway_integration" "options_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.demurl_api.id
+  resource_id             = aws_api_gateway_resource.shorten.id
+  http_method             = aws_api_gateway_method.options.http_method
+  integration_http_method = "OPTIONS"
+  type                    = "MOCK"
+  request_templates = {
+    "application/json" = "{\"statusCode\": 200}"
+  }
+}
+
+resource "aws_api_gateway_method_response" "options_response" {
+  rest_api_id = aws_api_gateway_rest_api.demurl_api.id
+  resource_id = aws_api_gateway_resource.shorten.id
+  http_method = aws_api_gateway_method.options.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.demurl_api.id
+  resource_id = aws_api_gateway_resource.shorten.id
+  http_method = aws_api_gateway_method.options.http_method
+  status_code = aws_api_gateway_method_response.options_response.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method.options,
+    aws_api_gateway_integration.options_integration,
+  ]
+}
+
+resource "aws_api_gateway_deployment" "dev_deployment" {
+  rest_api_id = aws_api_gateway_rest_api.demurl_api.id
+  lifecycle {
+    replace_triggered_by = [
+      aws_api_gateway_integration.post_lambda_integration,
+      aws_api_gateway_integration.get_lambda_integration
+    ]
+  }
+}
+
+resource "aws_api_gateway_stage" "dev" {
   deployment_id = aws_api_gateway_deployment.dev_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.demurl_api.id
   stage_name    = "dev"
+  lifecycle {
+    replace_triggered_by = [aws_api_gateway_deployment.dev_deployment]
+  }
 }
