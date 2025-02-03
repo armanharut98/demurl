@@ -10,3 +10,14 @@ Content-Type: application/json
 
 ###
 OPTIONS https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev/shorten
+
+###
+GET https://demurl.com/9e3adef2
+
+###
+POST https://demurl.com/shorten
+Content-Type: application/json
+
+{
+    "url": "https://www.youtube.com"
+}

@@ -7,7 +7,7 @@ function App() {
   const [url, setUrl] = useState("")
   const [shortenedUrl, setShortenedUrl] = useState("")
 
-  const baseUrl = "https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev/"
+  const baseUrl = "https://uom3hqkkql.execute-api.us-east-1.amazonaws.com/dev"
 
   const protocol = "http://"
 
